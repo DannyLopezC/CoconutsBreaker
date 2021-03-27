@@ -7,7 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Piece extends JButton {
-	private static int pieceSize = 0;
+	private static int pieceXSize = 0;
+	private static int pieceYSize = 0;
 	private static int maxPieces = 0;
 	private int[] pos;
 	private int id;
@@ -18,12 +19,18 @@ public class Piece extends JButton {
 		setImage(image, id);
 
 		this.setBackground(Color.WHITE);
-		Dimension size = new Dimension(pieceSize, pieceSize);
+		Dimension size = new Dimension(pieceXSize, pieceYSize);
 		this.setSize(size);
+		setBorder(null);
+//		setFocusPainted(true);
 	}
 
 	public int getPos(int index) {
 		return this.pos[index];
+	}
+
+	public int[] getPos() {
+		return pos;
 	}
 
 	public int getId() {
@@ -45,8 +52,9 @@ public class Piece extends JButton {
 		}
 	}
 
-	public static void setPieceSizeMaxPieces(int size, int piecesNum) {
-		pieceSize = size;
+	public static void setPieceSizeMaxPieces(int xSize, int ySize, int piecesNum) {
+		pieceXSize = xSize;
+		pieceYSize = ySize;
 		maxPieces = piecesNum;
 	}
 
