@@ -31,6 +31,8 @@ public class CoconutsBreaker extends JFrame {
 	private JPanel centralPanel, buttonPanel;
 	private JButton help, mix, exit;
 	private Listener listener;
+	private Help helpWindow = new Help(this);
+	private JFrame myself = this;
 
 	private JPanel contentPane;
 
@@ -131,7 +133,8 @@ public class CoconutsBreaker extends JFrame {
 			if (e.getSource() == exit) {
 				System.exit(0);
 			} else if (e.getSource() == help) {
-
+				helpWindow.setVisible(true);
+				myself.setVisible(false);
 			} else if (e.getSource() == mix) {
 
 			}
