@@ -63,8 +63,12 @@ public class Piece extends JButton {
 		maxPieces = piecesNum;
 	}
 
-	public void showImage() {
-		setIcon(image);
+	public void showImage(boolean show) {
+		if (show) {
+			setIcon(image);
+		} else {
+			setIcon(null);
+		}
 	}
 
 	public void exchangePieces(Piece piece) {

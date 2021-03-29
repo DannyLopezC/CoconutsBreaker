@@ -30,7 +30,7 @@ public class CoconutsBreaker extends JFrame {
 	private BufferedImage bufferImage = null;
 	private Piece[][] board = new Piece[gridSize][gridSize];
 	private JPanel centralPanel, buttonPanel;
-	private JButton help, mix, exit;
+	private JButton help, mix, exit, playAgain;
 	private Listener listener;
 	private Help helpWindow = new Help(this);
 	private JFrame myself = this;
@@ -82,6 +82,10 @@ public class CoconutsBreaker extends JFrame {
 		mix.addActionListener(listener);
 		buttonPanel.add(mix);
 
+		playAgain = new JButton("Play Again");
+		playAgain.addActionListener(listener);
+//		buttonPanel.add(playAgain);
+
 		exit = new JButton("Exit");
 		exit.addActionListener(listener);
 		buttonPanel.add(exit);
@@ -117,12 +121,16 @@ public class CoconutsBreaker extends JFrame {
 
 		if (x < gridSize - 1 && !board[x + 1][y].hasImage()) {
 			piece.exchangePieces(board[x + 1][y]);
+			evaluateGameState();
 		} else if (y < gridSize - 1 && !board[x][y + 1].hasImage()) {
 			piece.exchangePieces(board[x][y + 1]);
+			evaluateGameState();
 		} else if (x > 0 && !board[x - 1][y].hasImage()) {
 			piece.exchangePieces(board[x - 1][y]);
+			evaluateGameState();
 		} else if (y > 0 && !board[x][y - 1].hasImage()) {
 			piece.exchangePieces(board[x][y - 1]);
+			evaluateGameState();
 		}
 	}
 
@@ -134,7 +142,7 @@ public class CoconutsBreaker extends JFrame {
 		int currentJPos = 0;
 
 		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
+			for (int j = 0; j < board[i].length; j++) {
 				if (!board[i][j].hasImage()) {
 					emptyPiece = board[i][j];
 					currentIPos = i;
@@ -186,6 +194,40 @@ public class CoconutsBreaker extends JFrame {
 		}
 	}
 
+	private void evaluateGameState() {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board[i][j].getId() != board[i][j].getImageId()) {
+					return;
+				}
+			}
+		}
+
+		board[gridSize - 1][gridSize - 1].showImage(true);
+	}
+
+	private void playAgain() {
+		centralPanel = new JPanel();
+		centralPanel.setLayout(new GridLayout(gridSize, gridSize));
+		centralPanel.removeAll();
+		centralPanel.updateUI();
+		add(centralPanel, BorderLayout.CENTER);
+
+		int id = 0;
+
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				BufferedImage subImage = bufferImage.getSubimage(j * pieceXSize, i * pieceYSize, pieceXSize,
+						pieceYSize);
+
+				ImageIcon buttonImage = new ImageIcon(subImage);
+				board[i][j] = new Piece(new int[] { i, j }, id, buttonImage);
+				centralPanel.add(board[i][j]);
+				id++;
+			}
+		}
+	}
+
 	private class Listener extends MouseAdapter implements ActionListener {
 
 		@Override
@@ -198,6 +240,8 @@ public class CoconutsBreaker extends JFrame {
 				myself.setVisible(false);
 			} else if (e.getSource() == mix) {
 				mixBoard();
+			} else if (e.getSource() == playAgain) {
+//				playAgain();
 			}
 		}
 
