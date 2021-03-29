@@ -11,13 +11,14 @@ public class Piece extends JButton {
 	private static int pieceYSize = 0;
 	private static int maxPieces = 0;
 	private int[] pos;
-	private int id;
+	private int imageId, id;
 	private ImageIcon image;
 
-	public Piece(int[] pos, int id, ImageIcon image) {
+	public Piece(int[] pos, int imageId, ImageIcon image) {
 		this.pos = pos;
-		setImage(image, id);
+		setImage(image, imageId);
 
+		id = imageId;
 		this.setBackground(Color.WHITE);
 		Dimension size = new Dimension(pieceXSize, pieceYSize);
 		this.setSize(size);
@@ -33,6 +34,10 @@ public class Piece extends JButton {
 		return pos;
 	}
 
+	public int getImageId() {
+		return imageId;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -43,7 +48,7 @@ public class Piece extends JButton {
 
 	public void setImage(ImageIcon image, int id) {
 		this.image = image;
-		this.id = id;
+		this.imageId = id;
 
 		if (id < maxPieces - 1) {
 			setIcon(image);
@@ -63,10 +68,10 @@ public class Piece extends JButton {
 	}
 
 	public void exchangePieces(Piece piece) {
-		int newId = piece.getId();
+		int newId = piece.getImageId();
 		ImageIcon newImage = piece.getImage();
 
-		piece.setImage(image, id);
+		piece.setImage(image, imageId);
 		setImage(newImage, newId);
 	}
 

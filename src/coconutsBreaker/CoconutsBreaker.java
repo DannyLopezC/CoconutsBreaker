@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -125,6 +126,66 @@ public class CoconutsBreaker extends JFrame {
 		}
 	}
 
+	private void mixBoard() {
+		Piece emptyPiece = board[0][0];
+		int mixTimes = 0;
+		Random random = new Random();
+		int currentIPos = 0;
+		int currentJPos = 0;
+
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (!board[i][j].hasImage()) {
+					emptyPiece = board[i][j];
+					currentIPos = i;
+					currentJPos = j;
+				}
+			}
+		}
+
+		while (mixTimes < 65) {
+			boolean changed = false;
+			switch (random.nextInt(4)) {
+			case 0:// up
+				if (currentIPos > 0) {
+					emptyPiece.exchangePieces(board[currentIPos - 1][currentJPos]);
+					currentIPos--;
+					changed = true;
+				}
+				break;
+			case 1:// down
+				if (currentIPos < gridSize - 1) {
+					emptyPiece.exchangePieces(board[currentIPos + 1][currentJPos]);
+					currentIPos++;
+					changed = true;
+				}
+				break;
+			case 2:// left
+				if (currentJPos > 0) {
+					emptyPiece.exchangePieces(board[currentIPos][currentJPos - 1]);
+					currentJPos--;
+					changed = true;
+				}
+				break;
+			case 3:// right
+				if (currentJPos < gridSize - 1) {
+					emptyPiece.exchangePieces(board[currentIPos][currentJPos + 1]);
+					currentJPos++;
+					changed = true;
+				}
+				break;
+			default:
+				changed = false;
+				System.out.println("why do I exist?");
+				break;
+			}
+
+			if (changed) {
+				mixTimes++;
+			}
+		}
+	}
+
 	private class Listener extends MouseAdapter implements ActionListener {
 
 		@Override
@@ -136,7 +197,7 @@ public class CoconutsBreaker extends JFrame {
 				helpWindow.setVisible(true);
 				myself.setVisible(false);
 			} else if (e.getSource() == mix) {
-
+				mixBoard();
 			}
 		}
 
