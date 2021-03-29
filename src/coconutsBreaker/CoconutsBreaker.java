@@ -151,7 +151,7 @@ public class CoconutsBreaker extends JFrame {
 			}
 		}
 
-		while (mixTimes < 65) {
+		while (mixTimes < 1000) {
 			boolean changed = false;
 			switch (random.nextInt(4)) {
 			case 0:// up
